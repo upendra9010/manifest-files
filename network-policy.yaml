@@ -1,0 +1,38 @@
+#cretae networkpolicy.yaml
+apiVersion: networking.k8s.io/v1  
+kind: NetworkPolicy
+metadata:
+  name: allow-app-to-db 
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp  
+  policyTypes:
+    - Ingress 
+    - Egress
+
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: myapp
+      ports:
+        - protocol: TCP
+          port: 80
+
+  egress:
+    - to: 
+        - podSelector:
+            matchLabels:
+              app: app-database
+      ports:
+        - protocol: TCP
+          port: 3306
+
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+            ports:
+              - protocol: UDP
+                port: 53
