@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mycontainer
-          image: nginx:latest
+          image: upendra9010/k8s-2:appimage
 
           ports:
             - containerPort: 80
