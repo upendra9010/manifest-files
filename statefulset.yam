@@ -16,9 +16,6 @@ spec:
         app: app-database
 
     spec:
-      imagePullSecrets:
-        - name: dockerhub-secret
-
       containers:
         - name: mysql
           image: upendra9010/k8s-2:dbimage
@@ -33,7 +30,7 @@ spec:
 
           volumeMounts:
             - name: mysql-storage
-              mountPath: /var/lib/mysql
+              mountPath: /usr/share/nginx/html/
 
   volumeClaimTemplates:
     - metadata:
