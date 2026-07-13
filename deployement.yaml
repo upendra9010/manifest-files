@@ -1,28 +1,32 @@
-#deployemt yaml file
 apiVersion: apps/v1
-kind: Deployment  
+kind: Deployment
 metadata:
   name: mydeployment
+
 spec:
   replicas: 3
+
   selector:
     matchLabels:
       app: myapp
+
   template:
     metadata:
       labels:
-        app: myapp  
+        app: myapp
+
     spec:
-      containers: 
+      containers:
         - name: mycontainer
           image: nginx:latest
+
           ports:
             - containerPort: 80
 
           envFrom:
             - configMapRef:
-              name: myconfigmap
-            
+                name: myconfigmap
+
           resources:
             requests:
               memory: "64Mi"
