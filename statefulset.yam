@@ -3,38 +3,45 @@ kind: StatefulSet
 metadata:
   name: mysql
 spec:
-  serviceName: "mysql"
+  serviceName: db-service
   replicas: 1
+
   selector:
     matchLabels:
       app: app-database
+
   template:
     metadata:
       labels:
         app: app-database
+
     spec:
-      containers:
-      - name: nginx
-        image: upendra9010/k8s-2:dbimage
-        ports:
-        - containerPort: 80
-          name: web
-        
-        envFrom:
-          - secretRef:
-            name: mysecret
-            
-        volumeMounts:
-        - name: www
-          mountPath: /usr/share/nginx/html
       imagePullSecrets:
-            - name: dockerhub-secret
+        - name: dockerhub-secret
+
+      containers:
+        - name: mysql
+          image: upendra9010/k8s-2:dbimage
+
+          ports:
+            - containerPort: 3306
+              name: mysql
+
+          envFrom:
+            - secretRef:
+                name: mysecret
+
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
 
   volumeClaimTemplates:
-  - metadata:
-      name: www
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi
+    - metadata:
+        name: mysql-storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 1Gi
