@@ -1,5 +1,4 @@
-#create a ingress.yaml file
-apiVersion: networking.k8s.io/v1  
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: myingress
@@ -7,8 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: 
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
